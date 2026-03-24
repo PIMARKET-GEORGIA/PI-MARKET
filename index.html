@@ -1,11 +1,55 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="ka">
 <head>
-    <title>ჩემი პი მაღაზია</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY PI GEORGIA</title>
+    
+    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    <script>
+        // Pi აპლიკაციის ინიციალიზაცია
+        const Pi = window.Pi;
+        Pi.init({ version: "2.0", sandbox: true });
+
+        async function auth() {
+            try {
+                // მომხმარებლის ავტორიზაცია და ნებართვების მოთხოვნა
+                const scopes = ['username', 'payments'];
+                
+                function onIncompletePaymentFound(payment) {
+                    console.log("დაუსრულებელი გადახდა:", payment);
+                };
+
+                const authResponse = await Pi.authenticate(scopes, onIncompletePaymentFound);
+                
+                document.getElementById('user-info').innerText = "მოგესალმებით, " + authResponse.user.username + "!";
+                console.log("ავტორიზაცია წარმატებულია:", authResponse);
+            } catch (err) {
+                console.error("ავტორიზაციის შეცდომა:", err);
+                alert("გთხოვთ, გახსნათ ეს საიტი Pi Browser-ში!");
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 50px; background-color: #f4f4f4; }
+        .container { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        button { background-color: #673ab7; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #512da8; }
+        #user-info { margin-top: 20px; font-weight: bold; color: #673ab7; }
+    </style>
 </head>
 <body>
-    <h1>მოგესალმებით ჩემს აპლიკაციაში!</h1>
-    <p>ეს არის ჩემი პირველი ნაბიჯი Pi ეკოსისტემაში.</p>
+
+    <div class="container">
+        <h1>მოგესალმებით MY PI GEORGIA-ში</h1>
+        <p>ეს არის ქართული Pi მარკეტის სატესტო ვერსია.</p>
+        
+        <button onclick="auth()">შესვლა Pi-ით</button>
+        
+        <div id="user-info"></div>
+    </div>
+
 </body>
 </html>
