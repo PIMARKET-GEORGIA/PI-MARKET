@@ -1,29 +1,98 @@
 <!DOCTYPE html>
-<html>
+<html lang="ka">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY PI GEORGIA</title>
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-    <title>PI GEORGIA</title>
+    <style>
+        :root { --pi-purple: #673ab7; --soft-bg: #fdfdfd; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f7; margin: 0; color: #1d1d1f; }
+        
+        /* Header */
+        header { background: white; padding: 20px; text-align: center; border-bottom: 1px solid #e5e5e5; sticky; top: 0; z-index: 100; }
+        header h1 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: 1px; color: var(--pi-purple); }
+
+        .container { padding: 15px; max-width: 600px; margin: auto; }
+
+        /* User Info Section */
+        .user-card { background: white; border-radius: 18px; padding: 15px; margin-bottom: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        .auth-btn { background: var(--pi-purple); color: white; border: none; padding: 10px 25px; border-radius: 12px; font-weight: 600; cursor: pointer; }
+
+        /* Category Title */
+        .section-title { font-size: 18px; font-weight: 600; margin: 25px 0 15px 5px; color: #444; }
+
+        /* Product Grid */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .product-card { background: white; border-radius: 20px; padding: 15px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; transition: 0.3s; }
+        .product-card:active { transform: scale(0.96); }
+        .icon { font-size: 40px; margin-bottom: 10px; display: block; }
+        .p-name { font-size: 15px; font-weight: 500; margin-bottom: 8px; height: 40px; overflow: hidden; }
+        .p-price { font-size: 17px; font-weight: 700; color: var(--pi-purple); margin-bottom: 12px; }
+        .buy-mini { background: #f2f2f7; color: var(--pi-purple); border: none; width: 100%; padding: 8px; border-radius: 10px; font-weight: 600; font-size: 13px; }
+    </style>
 </head>
-<body style="text-align: center; padding: 50px; font-family: sans-serif;">
+<body>
+
+<header>
     <h1>MY PI GEORGIA</h1>
-    <div id="user-info">გთხოვთ გაიაროთ ავტორიზაცია</div>
-    <button onclick="auth()" style="background: #673ab7; color: white; padding: 15px; border: none; border-radius: 10px;">შესვლა Pi-თ</button>
+</header>
 
-    <script>
-        const Pi = window.Pi;
-        Pi.init({ version: "2.0", sandbox: true });
+<div class="container">
+    <div class="user-card">
+        <div id="user-info" style="margin-bottom: 10px;">ავტორიზაცია საჭიროა</div>
+        <button class="auth-btn" onclick="auth()">შესვლა Pi Browser-ით</button>
+    </div>
 
-        async function auth() {
-            try {
-                const scopes = ['username', 'payments'];
-                const authResponse = await Pi.authenticate(scopes, (payment) => {
-                    console.log("Found incomplete payment:", payment);
-                });
-                document.getElementById('user-info').innerText = "მოგესალმებით, " + authResponse.user.username;
-            } catch (err) {
-                alert("გთხოვთ, გახსნათ ეს საიტი Pi Browser-ში!");
-            }
-        }
-    </script>
+    <div class="section-title">📱 ტექნიკა და მობილურები</div>
+    <div class="grid">
+        <div class="product-card">
+            <span class="icon">📱</span>
+            <div class="p-name">iPhone 15 Pro</div>
+            <div class="p-price">450 Pi</div>
+            <button class="buy-mini" onclick="pay('iPhone 15', 450)">ყიდვა</button>
+        </div>
+        <div class="product-card">
+            <span class="icon">💻</span>
+            <div class="p-name">MacBook Air M2</div>
+            <div class="p-price">600 Pi</div>
+            <button class="buy-mini" onclick="pay('MacBook', 600)">ყიდვა</button>
+        </div>
+    </div>
+
+    <div class="section-title">🏠 საოჯახო ნივთები</div>
+    <div class="grid">
+        <div class="product-card">
+            <span class="icon">☕</span>
+            <div class="p-name">ყავის აპარატი</div>
+            <div class="p-price">85 Pi</div>
+            <button class="buy-mini" onclick="pay('Coffee Maker', 85)">ყიდვა</button>
+        </div>
+        <div class="product-card">
+            <span class="icon">🧺</span>
+            <div class="p-name">სარეცხი მანქანა</div>
+            <div class="p-price">320 Pi</div>
+            <button class="buy-mini" onclick="pay('Washer', 320)">ყიდვა</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const Pi = window.Pi;
+    Pi.init({ version: "2.0", sandbox: true });
+
+    async function auth() {
+        try {
+            const scopes = ['username', 'payments'];
+            const authResponse = await Pi.authenticate(scopes, (payment) => {});
+            document.getElementById('user-info').innerText = "გამარჯობა, " + authResponse.user.username;
+        } catch (err) { alert("გახსენით Pi Browser-ში!"); }
+    }
+
+    async function pay(name, amount) {
+        alert("ნივთი: " + name + "\nფასი: " + amount + " Pi\nგადახდა გააქტიურდება API Key-ს შემდეგ.");
+    }
+</script>
+
 </body>
 </html>
