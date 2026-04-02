@@ -1,55 +1,31 @@
-
 <!DOCTYPE html>
-<html lang="ka">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MY PI GEORGIA</title>
-    
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    <title>PI GEORGIA</title>
+</head>
+<body style="text-align: center; padding: 50px; font-family: sans-serif;">
+    <h1>MY PI GEORGIA</h1>
+    <div id="user-info">გთხოვთ გაიაროთ ავტორიზაცია</div>
+    <button onclick="auth()" style="background: #673ab7; color: white; padding: 15px; border: none; border-radius: 10px;">შესვლა Pi-თ</button>
+
     <script>
-        // Pi აპლიკაციის ინიციალიზაცია
         const Pi = window.Pi;
         Pi.init({ version: "2.0", sandbox: true });
 
         async function auth() {
             try {
-                // მომხმარებლის ავტორიზაცია და ნებართვების მოთხოვნა
                 const scopes = ['username', 'payments'];
-                
-                function onIncompletePaymentFound(payment) {
-                    console.log("დაუსრულებელი გადახდა:", payment);
-                };
-
-                const authResponse = await Pi.authenticate(scopes, onIncompletePaymentFound);
-                
-                document.getElementById('user-info').innerText = "მოგესალმებით, " + authResponse.user.username + "!";
-                console.log("ავტორიზაცია წარმატებულია:", authResponse);
+                const authResponse = await Pi.authenticate(scopes, (payment) => {
+                    console.log("Found incomplete payment:", payment);
+                });
+                document.getElementById('user-info').innerText = "მოგესალმებით, " + authResponse.user.username;
             } catch (err) {
-                console.error("ავტორიზაციის შეცდომა:", err);
                 alert("გთხოვთ, გახსნათ ეს საიტი Pi Browser-ში!");
             }
         }
     </script>
-
-    <style>
-        body { font-family: sans-serif; text-align: center; padding: 50px; background-color: #f4f4f4; }
-        .container { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        button { background-color: #673ab7; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; }
-        button:hover { background-color: #512da8; }
-        #user-info { margin-top: 20px; font-weight: bold; color: #673ab7; }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <h1>მოგესალმებით MY PI GEORGIA-ში</h1>
-        <p>ეს არის ქართული Pi მარკეტის სატესტო ვერსია.</p>
-        
-        <button onclick="auth()">შესვლა Pi-ით</button>
-        
-        <div id="user-info"></div>
-    </div>
-
 </body>
 </html>
+
+
