@@ -3,95 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MY PI GEORGIA</title>
+    <title>MY PI GEORGIA - MARKET</title>
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
     <style>
-        :root { --pi-purple: #673ab7; --soft-bg: #fdfdfd; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f7; margin: 0; color: #1d1d1f; }
+        :root { --main-color: #e91e63; --dark-blue: #2c3e50; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f8f9fa; }
         
         /* Header */
-        header { background: white; padding: 20px; text-align: center; border-bottom: 1px solid #e5e5e5; sticky; top: 0; z-index: 100; }
-        header h1 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: 1px; color: var(--pi-purple); }
+        header { background: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); sticky; top:0; z-index:100; }
+        .menu-btn { font-size: 24px; cursor: pointer; color: var(--main-color); }
+        .logo { font-weight: bold; font-size: 20px; color: var(--dark-blue); }
+        
+        /* Sidebar Menu */
+        .sidebar { height: 100%; width: 0; position: fixed; z-index: 200; top: 0; left: 0; background-color: white; overflow-x: hidden; transition: 0.5s; padding-top: 60px; box-shadow: 2px 0 10px rgba(0,0,0,0.2); }
+        .sidebar a { padding: 15px 25px; text-decoration: none; font-size: 16px; color: #333; display: block; border-bottom: 1px solid #eee; }
+        .sidebar a:hover { background: #f1f1f1; color: var(--main-color); }
+        .closebtn { position: absolute; top: 10px; right: 25px; font-size: 36px; color: var(--main-color); cursor:pointer; }
 
-        .container { padding: 15px; max-width: 600px; margin: auto; }
+        /* Banner */
+        .banner { background: linear-gradient(45deg, #e91e63, #9c27b0); color: white; padding: 30px 20px; text-align: center; margin: 15px; border-radius: 15px; }
 
-        /* User Info Section */
-        .user-card { background: white; border-radius: 18px; padding: 15px; margin-bottom: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
-        .auth-btn { background: var(--pi-purple); color: white; border: none; padding: 10px 25px; border-radius: 12px; font-weight: 600; cursor: pointer; }
-
-        /* Category Title */
-        .section-title { font-size: 18px; font-weight: 600; margin: 25px 0 15px 5px; color: #444; }
-
-        /* Product Grid */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .product-card { background: white; border-radius: 20px; padding: 15px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; transition: 0.3s; }
-        .product-card:active { transform: scale(0.96); }
-        .icon { font-size: 40px; margin-bottom: 10px; display: block; }
-        .p-name { font-size: 15px; font-weight: 500; margin-bottom: 8px; height: 40px; overflow: hidden; }
-        .p-price { font-size: 17px; font-weight: 700; color: var(--pi-purple); margin-bottom: 12px; }
-        .buy-mini { background: #f2f2f7; color: var(--pi-purple); border: none; width: 100%; padding: 8px; border-radius: 10px; font-weight: 600; font-size: 13px; }
+        /* Grid */
+        .container { padding: 15px; }
+        .category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .cat-card { background: white; padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .cat-card i { font-size: 30px; display: block; margin-bottom: 10px; }
+        
+        /* Floating Chat Button */
+        .chat-btn { position: fixed; bottom: 20px; right: 20px; background: var(--main-color); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-size: 24px; cursor: pointer; }
     </style>
 </head>
 <body>
 
+<div id="mySidebar" class="sidebar">
+  <span class="closebtn" onclick="closeNav()">&times;</span>
+  <a href="#">💻 კომპიუტერები</a>
+  <a href="#">📱 მობილურები</a>
+  <a href="#">📺 ტელევიზორები</a>
+  <a href="#">🏠 საოჯახო ტექნიკა</a>
+  <a href="#">🔧 სერვის ცენტრი</a>
+  <a href="#">📞 კონტაქტი</a>
+</div>
+
 <header>
-    <h1>MY PI GEORGIA</h1>
+    <div class="menu-btn" onclick="openNav()">☰</div>
+    <div class="logo">PI GEORGIA</div>
+    <div id="user-icon" style="font-size: 20px;">👤</div>
 </header>
 
+<div class="banner">
+    <h2>საუკეთესო ტექნიკა Pi-თ</h2>
+    <p>იყიდე და გაყიდე საქართველოში</p>
+    <button onclick="auth()" style="background:white; border:none; padding:10px 20px; border-radius:20px; color:var(--main-color); font-weight:bold;">შესვლა</button>
+</div>
+
 <div class="container">
-    <div class="user-card">
-        <div id="user-info" style="margin-bottom: 10px;">ავტორიზაცია საჭიროა</div>
-        <button class="auth-btn" onclick="auth()">შესვლა Pi Browser-ით</button>
-    </div>
-
-    <div class="section-title">📱 ტექნიკა და მობილურები</div>
-    <div class="grid">
-        <div class="product-card">
-            <span class="icon">📱</span>
-            <div class="p-name">iPhone 15 Pro</div>
-            <div class="p-price">450 Pi</div>
-            <button class="buy-mini" onclick="pay('iPhone 15', 450)">ყიდვა</button>
-        </div>
-        <div class="product-card">
-            <span class="icon">💻</span>
-            <div class="p-name">MacBook Air M2</div>
-            <div class="p-price">600 Pi</div>
-            <button class="buy-mini" onclick="pay('MacBook', 600)">ყიდვა</button>
-        </div>
-    </div>
-
-    <div class="section-title">🏠 საოჯახო ნივთები</div>
-    <div class="grid">
-        <div class="product-card">
-            <span class="icon">☕</span>
-            <div class="p-name">ყავის აპარატი</div>
-            <div class="p-price">85 Pi</div>
-            <button class="buy-mini" onclick="pay('Coffee Maker', 85)">ყიდვა</button>
-        </div>
-        <div class="product-card">
-            <span class="icon">🧺</span>
-            <div class="p-name">სარეცხი მანქანა</div>
-            <div class="p-price">320 Pi</div>
-            <button class="buy-mini" onclick="pay('Washer', 320)">ყიდვა</button>
-        </div>
+    <div class="category-grid">
+        <div class="cat-card"><span>💻</span><br>კომპიუტერები</div>
+        <div class="cat-card"><span>📱</span><br>სმარტფონები</div>
+        <div class="cat-card"><span>📷</span><br>ფოტო & ვიდეო</div>
+        <div class="cat-card"><span>🛴</span><br>სკუტერები</div>
     </div>
 </div>
 
+<div class="chat-btn" onclick="openChat()">💬</div>
+
 <script>
+    function openNav() { document.getElementById("mySidebar").style.width = "280px"; }
+    function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
+
     const Pi = window.Pi;
     Pi.init({ version: "2.0", sandbox: true });
 
     async function auth() {
         try {
-            const scopes = ['username', 'payments'];
-            const authResponse = await Pi.authenticate(scopes, (payment) => {});
-            document.getElementById('user-info').innerText = "გამარჯობა, " + authResponse.user.username;
-        } catch (err) { alert("გახსენით Pi Browser-ში!"); }
+            const auth = await Pi.authenticate(['username'], (p)=>{});
+            alert("მოგესალმებით, " + auth.user.username);
+            document.getElementById('user-icon').innerText = auth.user.username;
+        } catch (e) { alert("გახსენით Pi Browser-ში"); }
     }
 
-    async function pay(name, amount) {
-        alert("ნივთი: " + name + "\nფასი: " + amount + " Pi\nგადახდა გააქტიურდება API Key-ს შემდეგ.");
-    }
+    function openChat() { alert("ჩეთი მალე დაემატება!"); }
 </script>
 
 </body>
